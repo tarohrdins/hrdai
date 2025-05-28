@@ -1246,9 +1246,9 @@
                                 <i class="fas fa-download"></i> 画像なしでダウンロード
                             </button>
                         </div>
-                        <div class="loading" id="loadingStep7Images_step8" style="display: none; margin-top: 10px; background-color: transparent; border: none; padding: 5px;"> <!-- ID変更 (loadingStep8Images_step8 が望ましいが、元のIDとの整合性) -->
+                        <div class="loading" id="loadingImagesStep8" style="display: none; margin-top: 10px; background-color: transparent; border: none; padding: 5px;"> <!-- ID is already loadingImagesStep8, this is fine -->
                             <div class="spinner" style="width: 20px; height: 20px; border-width: 3px;"></div>
-                            <p style="font-size: 14px; margin-top: 5px;" id="loadingStep7ImagesText_step8">画像を生成中です...</p> <!-- ID変更 -->
+                            <p style="font-size: 14px; margin-top: 5px;" id="loadingImagesTextStep8">画像を生成中です...</p> <!-- ID is already loadingImagesTextStep8, this is fine -->
                         </div>
                     </div>
                 </div>
@@ -1353,10 +1353,10 @@
             totalDurationSpan: document.getElementById('totalDuration'),
             previewPptxButton: document.getElementById('previewPptxButton'), // ステップ6 PPTXプレビュー用
             downloadWordButton: document.getElementById('downloadWordButton'), // ステップ6 Word確認用
-            finalTargetAudienceSpan: document.getElementById('finalTargetAudience'),
-            finalIndustrySpan: document.getElementById('finalIndustry'),
-            finalChallengesSpan: document.getElementById('finalChallenges'),
-            finalTotalDurationSpan: document.getElementById('finalTotalDuration'),
+            // finalTargetAudienceSpan: document.getElementById('finalTargetAudience'), // Removed
+            // finalIndustrySpan: document.getElementById('finalIndustry'), // Removed
+            // finalChallengesSpan: document.getElementById('finalChallenges'), // Removed
+            finalTotalDurationSpan: document.getElementById('finalTotalDuration_step8'), // This ID was updated, key name `finalTotalDurationSpan` is kept as per previous changes.
 
             // domCacheオブジェクトの最後に追記
             // (step8は既存のstep7のID変更後)
@@ -1372,39 +1372,23 @@
             loadingStep7Optimization: document.getElementById('loadingStep7Optimization'),
             errorStep7: document.getElementById('errorStep7'), // 新ステップ7用エラー表示
             // ステップ8(旧ステップ7)の要素もキャッシュ更新（ID変更のため）
-            finalTargetAudienceSpanStep8: document.getElementById('finalTargetAudience_step8'), // ID変更を反映
-            finalIndustrySpanStep8: document.getElementById('finalIndustry_step8'),
-            finalChallengesSpanStep8: document.getElementById('finalChallenges_step8'),
-            finalTotalDurationSpanStep8: document.getElementById('finalTotalDuration_step8'),
-            trainingOverviewDivStep8: document.getElementById('trainingOverview_step8'),
+            finalTargetAudienceSpan: document.getElementById('finalTargetAudience_step8'), 
+            finalIndustrySpan: document.getElementById('finalIndustry_step8'),
+            finalChallengesSpan: document.getElementById('finalChallenges_step8'),
+            finalTotalDurationSpanStep8: document.getElementById('finalTotalDuration_step8'), // This was already updated above, but included here from the original diff for completeness of the block
+            trainingOverviewDiv: document.getElementById('trainingOverview_step8'), 
             finalDownloadPptxButtonStep8: document.getElementById('finalDownloadPptxButton_step8'),
             imageGenerationOptionsDivStep8: document.getElementById('imageGenerationOptions_step8'),
             generatePhotoButtonStep8: document.getElementById('generatePhotoButton_step8'),
             generateIllustButtonStep8: document.getElementById('generateIllustButton_step8'),
             downloadPptxWithoutImagesButtonStep8: document.getElementById('downloadPptxWithoutImagesButton_step8'),
-            loadingStep7ImagesStep8: document.getElementById('loadingStep7Images_step8'), // loadingStep8Images にすべきだが、元のIDを尊重
+            loadingImagesStep8: document.getElementById('loadingImagesStep8'), 
+            loadingImagesTextStep8: document.getElementById('loadingImagesTextStep8'), 
             finalDownloadWordButtonStep8: document.getElementById('finalDownloadWordButton_step8'),
             downloadAnalysisReportButtonStep8: document.getElementById('downloadAnalysisReport_step8'),
-            startOverButtonStep8: document.getElementById('startOverButton_step8'), // ID変更を反映
-
-
-
-            trainingOverviewDiv: document.getElementById('trainingOverview'), // ID修正
-            pptxDownloadCard: document.getElementById('pptxDownloadCard'), // PPTXカード全体
-            pptxDownloadOptionsDiv: document.getElementById('pptxDownloadOptions'), // オプション全体
-
-            finalDownloadPptxButton: document.getElementById('finalDownloadPptxButton'),
-
-            imageGenerationOptionsDiv: document.getElementById('imageGenerationOptions'), // 画像生成選択肢
-            generatePhotoButton: document.getElementById('generatePhotoButton'), // 写真生成ボタン
-            generateIllustButton: document.getElementById('generateIllustButton'), // イラスト生成ボタン
-            downloadPptxWithoutImagesButton: document.getElementById('downloadPptxWithoutImagesButton'), // 画像なしDLボタン
-            loadingStep7ImagesDiv: document.getElementById('loadingStep7Images'), // 画像生成ローディング
-            loadingStep7ImagesText_step8: document.getElementById('loadingStep7ImagesText_step8'), // 画像生成ローディングテキスト
-
-
-            finalDownloadWordButton: document.getElementById('finalDownloadWordButton'),
-            downloadAnalysisReportButton: document.getElementById('downloadAnalysisReport'),
+            startOverButtonStep8: document.getElementById('startOverButton_step8'), 
+            // pptxDownloadCard: document.getElementById('pptxDownloadCard'), // Removed
+            // pptxDownloadOptionsDiv: document.getElementById('pptxDownloadOptions'), // Removed
             progressBar: document.querySelector('.progress-bar'),
             processSteps: {
                 analyze: document.getElementById('process-analyze'),
