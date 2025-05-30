@@ -1143,6 +1143,7 @@
                         <button type="button" class="preset-duration-btn" data-duration="150">2.5時間 (150分)</button>
                         <button type="button" class="preset-duration-btn" data-duration="240">半日 (240分)</button>
                         <button type="button" class="preset-duration-btn" data-duration="420">1日 (420分)</button>
+                        <button type="button" id="noOptimizationButton" class="preset-duration-btn">最適化は不要</button>
                     </div>
                 </div>
 
@@ -1467,6 +1468,10 @@
             document.getElementById('optimizeTimeButton').addEventListener('click', optimizeTrainingTime);
             document.getElementById('resetTargetTimeButton').addEventListener('click', resetTargetTimeAndWarning);
             document.getElementById('goToStep8Button').addEventListener('click', () => { console.log("goToStep8Button clicked! Calling goToStep(8)."); goToStep(8); }); // 新ステップ7からステップ8へのボタン
+            const noOptimizationButton = document.getElementById('noOptimizationButton');
+            if (noOptimizationButton) {
+                noOptimizationButton.addEventListener('click', handleNoOptimization);
+            }
 
             // ステップ7のボタンリスナー追加
             domCache.generatePhotoButtonStep8.addEventListener('click', () => generateImagesAndRegeneratePptx('photo'));
@@ -6313,6 +6318,68 @@ Stranded	チームが孤立した状況に置かれたという設定で、限�
         function calculateTotalDurationFromData(data) {
             if (!data || !Array.isArray(data)) return 0;
             return data.reduce((sum, slide) => sum + (slide && slide.estimated_duration_min ? parseInt(slide.estimated_duration_min) : 0), 0);
+        }
+
+        // --- ステップ7: 「最適化は不要」ボタンの処理 ---
+        function handleNoOptimization() {
+            console.log("handleNoOptimization called");
+            hideError(7); // Clear previous errors
+
+            const currentDurationText = domCache.currentTotalDurationStep7.textContent;
+            const currentDuration = parseInt(currentDurationText) || 0;
+
+            if (domCache.targetDurationInput) {
+                domCache.targetDurationInput.value = currentDuration;
+            }
+            if (domCache.timeDifferenceStep7) {
+                domCache.timeDifferenceStep7.textContent = "0";
+            }
+
+            // Ensure talkScriptData reflects original Step 6 data
+            if (originalTalkScriptData) {
+                talkScriptData = JSON.parse(JSON.stringify(originalTalkScriptData));
+                console.log("talkScriptData has been reset to originalTalkScriptData.");
+            } else {
+                console.warn("originalTalkScriptData is not populated. Cannot reset talkScriptData.");
+                // Potentially display an error or handle this case,
+                // though prepareStep7OptimizationUI should have populated it.
+            }
+            
+            // Update total duration display (e.g., on Step 6 and Step 8 if needed)
+            if (domCache.totalDurationSpan) domCache.totalDurationSpan.textContent = currentDuration;
+            if (domCache.finalTotalDurationSpanStep8) domCache.finalTotalDurationSpanStep8.textContent = currentDuration;
+            if (domCache.optimizedTotalDuration) domCache.optimizedTotalDuration.textContent = currentDuration;
+
+
+            // Update optimizationLog
+            if (!optimizationLog) { // Should be initialized in prepareStep7OptimizationUI
+                optimizationLog = { actions: [] }; // Basic initialization if somehow missed
+            }
+            optimizationLog.targetDuration = currentDuration;
+            optimizationLog.finalDuration = currentDuration;
+            optimizationLog.strategy = "最適化不要";
+            optimizationLog.actions = []; // No actions taken
+            optimizationLog.riskWarning = null;
+
+            if (domCache.optimizationRiskWarning) {
+                domCache.optimizationRiskWarning.style.display = 'none';
+            }
+            if (domCache.resetTargetTimeButton) {
+                domCache.resetTargetTimeButton.style.display = 'none';
+            }
+            if (domCache.goToStep8Button) {
+                domCache.goToStep8Button.style.display = 'inline-block';
+            }
+            if (domCache.optimizeTimeButton) {
+                domCache.optimizeTimeButton.disabled = true;
+            }
+            // Hide any optimized script preview
+            if (domCache.intermediateResultStep7_OptimizedScript) {
+                domCache.intermediateResultStep7_OptimizedScript.style.display = 'none';
+            }
+
+
+            displayError('最適化は不要と設定されました。ステップ8へ進んでください。', 7, 'success');
         }
 
     </script>
