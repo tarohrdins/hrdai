@@ -1502,9 +1502,71 @@
 
             document.querySelectorAll('.preset-duration-btn').forEach(button => {
                 button.addEventListener('click', function() {
+                    if (this.id === 'noOptimizationButton') {
+                        // This button has its own dedicated handler, so do nothing here.
+                        return;
+                    }
+
                     const duration = this.dataset.duration;
                     if (domCache.targetDurationInput) {
                         domCache.targetDurationInput.value = duration;
+                        // Trigger input event to update difference
+                        domCache.targetDurationInput.dispatchEvent(new Event('input')); 
+                    }
+
+                    // Enable "Execute Optimization" button
+                    if (domCache.optimizeTimeButton) {
+                        domCache.optimizeTimeButton.disabled = false;
+                    }
+
+                    // Hide "Proceed to Package Creation" button
+                    if (domCache.goToStep8Button) {
+                        domCache.goToStep8Button.style.display = 'none';
+                    }
+
+                    // Hide "Reset Target Time" button
+                    if (domCache.resetTargetTimeButton) {
+                        domCache.resetTargetTimeButton.style.display = 'none';
+                    }
+
+                    // Hide optimization risk warnings
+                    if (domCache.optimizationRiskWarning) {
+                        domCache.optimizationRiskWarning.style.display = 'none';
+                    }
+
+                    // Clear previous Step 7 errors
+                    hideError(7);
+
+                    // Clear the optimized script preview area
+                    if (domCache.intermediateResultStep7_OptimizedScript) {
+                        domCache.intermediateResultStep7_OptimizedScript.style.display = 'none';
+                    }
+                    
+                    // Reset talkScriptData to originalTalkScriptData
+                    if (originalTalkScriptData) {
+                        talkScriptData = JSON.parse(JSON.stringify(originalTalkScriptData));
+                        console.log("Preset button clicked: talkScriptData has been reset to originalTalkScriptData.");
+                    } else {
+                        console.warn("Preset button clicked: originalTalkScriptData is not populated. Cannot reset talkScriptData.");
+                    }
+
+                    // Update optimizationLog
+                    if (optimizationLog) {
+                        optimizationLog.targetDuration = parseInt(duration);
+                        optimizationLog.finalDuration = null;
+                        optimizationLog.strategy = null;
+                        optimizationLog.actions = [];
+                        optimizationLog.riskWarning = null;
+                    } else {
+                        // Initialize if it was null, though it should be set in prepareStep7OptimizationUI
+                        optimizationLog = {
+                            originalDuration: parseInt(domCache.currentTotalDurationStep7.textContent) || 0,
+                            targetDuration: parseInt(duration),
+                            finalDuration: null,
+                            strategy: null,
+                            actions: [],
+                            riskWarning: null
+                        };
                     }
                 });
             });
